@@ -1,21 +1,25 @@
 import nodemailer from "nodemailer";
+import "dotenv/config";
 
+const senderEmail = process.env.SENDER_EMAIL;
+const senderPassword = process.env.SENDER_EMAIL_PASSWORD;
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: "smtp.sendgrid.net",
   port: 465,
   secure: true, // true for 465 connection use SSL , false for other ports
   auth: {
-    user: "<EMAIL>",
-    pass: "<PASSWORD>",
+    user: "apikey",
+    pass: senderPassword,
   },
+  from: senderEmail,
 });
 const sendEmail = async (to, subject, text) => {
   const mailOptions = {
-    from: '"Server Express" <express@example.com>', // sender address
+    from: `"Server express" <${senderEmail}>`, // sender address
     to: to, // list of receivers
     subject: subject, // Subject line
-    // text: text, // plain text body
-    // html: "<b>Hello world?</b>", // html body
+    text: text, // plain text body
+    html: "<b>Hello world?</b>", // html body
     attachments: [
       {
         filename: "test.pdf",
